@@ -49,3 +49,37 @@ export const generateCode1 = (function (start = 0) {
 export function generateCode2() {
   return generateCode2.value ? ++generateCode2.value : generateCode2.value = 1;
 }
+
+/**
+ * @typedef {Object} CartTotal
+ * @property {number} length - Длина корзины
+ * @property {number} cost - Итоговая стоимость товаров
+ */
+
+/**
+ * Получение общей стоимости товаров и её длины в корзине
+ * @param {Object[]} cart - Корзина
+ * @param {number} cart[].price - Стоимость товара
+ * @returns {CartTotal}
+ */
+export function getCartInfo(cart) {
+  if (!cart.length) {
+    return { length: 0, cost: 0 }
+  }
+
+  return { length: cart.length, cost: cart.reduce((acc, curr) => acc + curr.price * curr.amount, 0) }
+}
+
+/**
+ * Получение форматированной строки о текущем статусе Корзины
+ * @param {number} length - Длина
+ * @param {number} cost - Общая стоимость товаров
+ * @returns {string}
+ */
+export function formatCart(length, cost) {
+  if (!length) {
+    return "пусто"
+  }
+
+  return `${length} ${plural(length, { one: 'товар', few: 'товара', many: 'товаров' })} / ${cost} ₽`
+}

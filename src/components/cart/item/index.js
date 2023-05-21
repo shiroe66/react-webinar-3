@@ -11,7 +11,7 @@ function CartItem(props) {
       <div className='Item-title'>{props.item.title}</div>
       <div className="Item-price">{toLocaleCurrency(props.item.price)}</div>
       <div className="Item-amount">{props.item.amount}&nbsp;шт</div>
-      <div className='Item-actions' onClick={() => props.handleInteraction(props.item.code)}>
+      <div className='Item-actions' onClick={() => props.handleDelete(props.item.code)}>
         <button>Удалить</button>
       </div>
     </div>
@@ -25,11 +25,11 @@ CartItem.propTypes = {
     price: PropTypes.number,
     amount: PropTypes.number
   }).isRequired,
-  handleInteraction: PropTypes.func
+  handleDelete: PropTypes.func
 };
 
 CartItem.defaultProps = {
-  handleInteraction: () => { }
+  handleDelete: () => { }
 }
 
 export default React.memo(CartItem);

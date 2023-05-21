@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import './style.css';
 
 function List(props) {
-  const Item = props.item
-
   return (
-    <div className='List'>{
-      props.list.map(item =>
+    <div className='List'>
+      {props.list.map(item =>
         <div key={item.code} className='List-item'>
-          <Item item={item} handleInteraction={props.handleInteraction} />
+          {React.cloneElement(props.children, { item })}
         </div>
       )}
     </div>
@@ -20,12 +18,7 @@ List.propTypes = {
   list: PropTypes.arrayOf(PropTypes.shape({
     code: PropTypes.number
   })).isRequired,
-  item: PropTypes.elementType,
-  handleInteraction: PropTypes.func
+  children: PropTypes.node,
 };
-
-List.defaultProps = {
-  handleInteraction: () => { }
-}
 
 export default React.memo(List);

@@ -9,7 +9,7 @@ function Item(props) {
       <div className='Item-code'>{props.item.code}</div>
       <div className='Item-title'>{props.item.title}</div>
       <div className="Item-price">{toLocaleCurrency(props.item.price)}</div>
-      <div className='Item-actions' onClick={() => props.handleInteraction(props.item.code)}>
+      <div className='Item-actions' onClick={() => props.handleAdd(props.item.code)}>
         <button>Добавить</button>
       </div>
     </div>
@@ -22,11 +22,11 @@ Item.propTypes = {
     title: PropTypes.string,
     price: PropTypes.number
   }).isRequired,
-  handleInteraction: PropTypes.func
+  handleAdd: PropTypes.func
 };
 
 Item.defaultProps = {
-  handleInteraction: () => { }
+  handleAdd: () => { }
 }
 
 export default React.memo(Item);

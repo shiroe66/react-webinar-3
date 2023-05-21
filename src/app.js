@@ -42,11 +42,15 @@ function App({ store }) {
       <PageLayout>
         <Head title='Магазин' />
         <Cart info={computed.total} openModal={callbacks.handleModalState} />
-        <List list={list} item={Item} handleInteraction={callbacks.handleAdd} />
+        <List list={list}>
+          <Item handleAdd={callbacks.handleAdd} />
+        </List>
       </PageLayout>
       {isOpenModal &&
         <Modal title='Корзина' closeModal={callbacks.handleModalState}>
-          <List list={cart} item={CartItem} handleInteraction={callbacks.handleDelete} />
+          <List list={cart}>
+            <CartItem handleDelete={callbacks.handleDelete} />
+          </List>
           <Total cost={computed.total.cost} />
         </Modal>}
     </>

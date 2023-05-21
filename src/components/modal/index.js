@@ -1,8 +1,6 @@
-import React from "react";
 import PropTypes from 'prop-types';
+import React from "react";
 import './style.css';
-import List from "../list";
-import { getCartInfo } from "../../utils";
 
 function Modal(props) {
   return (
@@ -12,11 +10,7 @@ function Modal(props) {
           {props.title}
           <button onClick={props.closeModal}>Закрыть</button>
         </div>
-        <List list={props.items} handleInteraction={props.handleInteraction} interactionTitle={props.interactionTitle} />
-        <div className="Total">
-          <p>Итого</p>
-          <p>{getCartInfo(props.items).cost} ₽</p>
-        </div>
+        {props.children}
       </div>
     </div>
   )
@@ -24,19 +18,12 @@ function Modal(props) {
 
 Modal.propTypes = {
   title: PropTypes.string,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.number,
-    title: PropTypes.string,
-    price: PropTypes.number
-  })).isRequired,
   closeModal: PropTypes.func,
-  handleInteraction: PropTypes.func,
-  interactionTitle: PropTypes.string
+  children: PropTypes.node.isRequired,
 }
 
 Modal.defaultProps = {
   closeModal: () => { },
-  handleInteraction: () => { }
 }
 
 export default React.memo(Modal);

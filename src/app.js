@@ -1,9 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import List from "./components/list";
 import Cart from "./components/cart";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
 import Modal from './components/modal';
+import Item from './components/item'
+import CartItem from './components/cart/item'
+import Total from './components/total'
 
 /**
  * Приложение
@@ -28,18 +31,24 @@ function App({ store }) {
     }
   }
 
+  const computed = {
+    total: useMemo(() => {
+      return store.getCartTotal()
+    }, [store.state.cart])
+  }
+
   return (
     <>
       <PageLayout>
         <Head title='Магазин' />
-        <Cart cart={cart} openModal={callbacks.handleModalState} />
-        <List list={list} handleInteraction={callbacks.handleAdd} interactionTitle={'Добавить'} />
+        <Cart info={computed.total} openModal={callbacks.handleModalState} />
+        <List list={list} item={Item} handleInteraction={callbacks.handleAdd} />
       </PageLayout>
       {isOpenModal &&
-        <Modal title='Корзина'
-          items={cart}
-          closeModal={callbacks.handleModalState}
-          handleInteraction={callbacks.handleDelete} interactionTitle={'Удалить'} />}
+        <Modal title='Корзина' closeModal={callbacks.handleModalState}>
+          <List list={cart} item={CartItem} handleInteraction={callbacks.handleDelete} />
+          <Total cost={computed.total.cost} />
+        </Modal>}
     </>
   );
 }

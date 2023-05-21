@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import Item from "../item";
 import './style.css';
 
-function List({ list, handleInteraction, interactionTitle }) {
+function List(props) {
+  const Item = props.item
+
   return (
     <div className='List'>{
-      list.map(item =>
+      props.list.map(item =>
         <div key={item.code} className='List-item'>
-          <Item item={item} handleInteraction={handleInteraction} interactionTitle={interactionTitle} />
+          <Item item={item} handleInteraction={props.handleInteraction} />
         </div>
       )}
     </div>
@@ -19,8 +20,8 @@ List.propTypes = {
   list: PropTypes.arrayOf(PropTypes.shape({
     code: PropTypes.number
   })).isRequired,
-  handleInteraction: PropTypes.func,
-  interactionTitle: PropTypes.string
+  item: PropTypes.elementType,
+  handleInteraction: PropTypes.func
 };
 
 List.defaultProps = {

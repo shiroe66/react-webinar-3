@@ -1,26 +1,23 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { getCartInfo, formatCart } from '../../utils';
+import { formatCart } from '../../utils';
 import './style.css';
 
 function Cart(props) {
-  const { cost, length } = getCartInfo(props.cart)
-
   return (
     <div className='Cart'>
       <div>В корзине:</div>
-      <div className="Cart-info">{formatCart(length, cost)}</div>
+      <div className="Cart-info">{formatCart(props.info.length, props.info.cost)}</div>
       <button onClick={props.openModal}>Перейти</button>
     </div>
   )
 }
 
 Cart.propTypes = {
-  cart: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.number,
-    title: PropTypes.string,
-    price: PropTypes.number
-  })).isRequired,
+  info: PropTypes.shape({
+    cost: PropTypes.number.isRequired,
+    length: PropTypes.number.isRequired
+  }),
   openModal: PropTypes.func
 }
 

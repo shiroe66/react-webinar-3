@@ -7,7 +7,7 @@ function Cart(props) {
   return (
     <div className='Cart'>
       <div>В корзине:</div>
-      <div className="Cart-info">{formatCart(props.info.length, props.info.cost)}</div>
+      <div className="Cart-info">{formatCart(props.info)}</div>
       <button onClick={props.openModal}>Перейти</button>
     </div>
   )
@@ -15,7 +15,7 @@ function Cart(props) {
 
 Cart.propTypes = {
   info: PropTypes.shape({
-    cost: PropTypes.number.isRequired,
+    total: PropTypes.number.isRequired,
     length: PropTypes.number.isRequired
   }),
   openModal: PropTypes.func

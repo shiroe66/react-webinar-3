@@ -1,5 +1,3 @@
-import { generateCode } from "./utils";
-
 /**
  * Хранилище состояния приложения
  */
@@ -7,7 +5,10 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
-    this.state.cart = [] // Корзина
+    this.state.cart = {
+      list: [],
+      total: 0
+    } // Корзина
   }
 
   /**
@@ -46,22 +47,29 @@ class Store {
    * @param code {number}
    */
   addItem(code) {
-    const itemInCart = this.state.cart.find((item) => item.code === code)
+    const itemInCart = this.state.cart.list.find((item) => item.code === code)
     const item = this.state.list.find((item) => item.code === code)
 
     if (itemInCart) {
       this.setState({
         ...this.state,
-        cart: this.state.cart.map((item) => {
-          if (item.code === code) item.amount++
-          return item
-        })
+        cart: {
+          ...this.state.cart,
+          list: this.state.cart.list.map((item) => {
+            if (item.code === code) item.amount++
+            return item
+          }),
+        }
       })
     } else {
       this.setState({
-        ...this.state, cart: [...this.state.cart, { ...item, amount: 1 }]
+        ...this.state, cart: {
+          ...this.state.cart,
+          list: [...this.state.cart.list, { ...item, amount: 1 }],
+        }
       })
     }
+    this.#updateCartTotal()
   };
 
   /**
@@ -71,25 +79,20 @@ class Store {
   deleteItem(code) {
     this.setState({
       ...this.state,
-      cart: this.state.cart.filter(item => item.code !== code)
+      cart: {
+        ...this.state.cart,
+        list: this.state.cart.list.filter(item => item.code !== code),
+      }
     })
+    this.#updateCartTotal()
   };
 
   /**
-   * @typedef {Object} CartTotal
-   * @property {number} length - Длина корзины
-   * @property {number} cost - Итоговая стоимость товаров
+   * Обновление общей стоимости товара
+   * @returns {void}
    */
-
-  /**
-   * Получение размера и общей стоимости корзины
-   * @returns {CartTotal}
-   */
-  getCartTotal() {
-    const length = this.state.cart.length
-    const cost = this.state.cart.reduce((acc, curr) => acc + curr.price * curr.amount, 0)
-
-    return { length, cost }
+  #updateCartTotal() {
+    this.state.cart.total = this.state.cart.list.reduce((acc, curr) => acc + curr.price * curr.amount, 0)
   }
 }
 

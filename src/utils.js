@@ -52,16 +52,17 @@ export function generateCode2() {
 
 /**
  * Получение форматированной строки о текущем статусе Корзины
- * @param {number} length - Длина
- * @param {number} cost - Общая стоимость товаров
- * @returns {string}
+ * @param {Object} options - Объект, содержащий следующие свойства:
+ * @param {number} options.length - Длина
+ * @param {number} options.total - Общая стоимость товаров
+ * @returns {string} Строка, описывающая статус корзины. Если корзина пуста, возвращает "пусто".
  */
-export function formatCart(length, cost) {
+export function formatCart({length, total}) {
   if (!length) {
     return "пусто"
   }
 
-  return `${length} ${plural(length, { one: 'товар', few: 'товара', many: 'товаров' })} / ${toLocaleCurrency(cost)}`
+  return `${length} ${plural(length, { one: 'товар', few: 'товара', many: 'товаров' })} / ${toLocaleCurrency(total)}`
 }
 
 /**
